@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Speech Example</title>
+    <script>
+
+        var recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "en-US";
+
+        recognition.onerror = function(event) {
+            console.error(event);
+        };
+
+        recognition.onstart = function() {
+            console.log('Speech recognition service has started');
+        };
+
+        recognition.onend = function() {
+            console.log('Speech recognition service disconnected');
+            recognition.start();
+        };
+
+        recognition.onresult = function(event) {
+            var interim_transcript = '';
+            var final_transcript = '';
+
+        //for loop
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+            // Verify if the recognized text is the last with the isFinal property
+            if (event.results[i].isFinal) {
+            final_transcript += event.results[i][0].transcript;
+            } else {
+            interim_transcript += event.results[i][0].transcript;
+            }
+        }
+
+    //let's handle the results
+
+    console.log("Final: ",final_transcript);
+
+    //control what you want to do
+    if(final_transcript.includes("make blue")){
+        var utterance = new SpeechSynthesisUtterance('making tiffany blue');
+        window.speechSynthesis.speak(utterance);
+        document.body.style.backgroundColor = "aquamarine";
+    }
+    else if(final_transcript.includes("make purple")){
+        var utterance = new SpeechSynthesisUtterance('making purple');
+        window.speechSynthesis.speak(utterance);
+        document.body.style.backgroundColor = "purple";
+    }
+    else if(final_transcript.includes("make yellow")){
+        var utterance = new SpeechSynthesisUtterance('making yellow');
+        window.speechSynthesis.speak(utterance);
+        document.body.style.backgroundColor = "yellow";
+    }
+    else if(final_transcript.includes("say goodbye")){
+        var utterance = new SpeechSynthesisUtterance('peace');
+        window.speechSynthesis.speak(utterance);
+    }
+    else if(final_transcript.includes("Whats up fam")){
+        var utterance = new SpeechSynthesisUtterance('its lit');
+        window.speechSynthesis.speak(utterance);
+    }
+    else if(final_transcript.includes("print")){
+        document.body.innerHTML = "<div>"+final_transcript+"</div>";
+    }
+    else if(final_transcript.includes("show a car")){
+        var utterance = new SpeechSynthesisUtterance('showing Mazda Furai');
+        window.speechSynthesis.speak(utterance);
+        document.body.innerHTML = '<img src="https://s-media-cache-ak0.pinimg.com/originals/08/b5/08/08b50811dbae36f3b1ca35a7701d6e1e.jpg">';
+    }
+    else if(final_transcript.includes("play black panther")){
+        var utterance = new SpeechSynthesisUtterance('playing Marvel Studios Black Panther Trailer');
+        window.speechSynthesis.speak(utterance);
+        document.body.innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/watch?v=xjDjIWPwcPU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+    }
+}
+
+recognition.start()
+
+    </script>
+
+
+  </head>
+  <body>
+  </body>
+</html>
